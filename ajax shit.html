@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+</head>
+<body>
+    <h1> AJAX JSON Google Shit</h1>
+    <button type="button" id="loadData">Load Data</button><br><br>
+
+       <form id="myForm">
+          <div> First Name: <input type="text" name="First Name" value="First Name"><br></div>
+          <div> Last Name: <input type="text" name="Last Name" value="Last Name"><br></div>
+          <div> City: <input type="text" name="City" value="City"><br></div>
+          <div> Age: <input type="text" name="Age" value="Age"><br></div>
+          <div> Email: <input type="text" name="Email" value="Email"><br><br></div>
+          <button type="submit" id="submit">Send Data</button>
+       </form>                                                         
+
+
+    <div id="output"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#myForm').submit(function(e){
+                e.preventDefault();
+                var myData = $('form#myForm :input').serialize();
+                var url = 'https://script.google.com/macros/s/AKfycbwwI0HKVgPzla23ypNm1t5_B0H7q2FqWZAWNDe54N9NHJuA1a8/exec';
+                console.log(myData)
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: myData,
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
+            })
+
+
+
+
+
+            $('#loadData').click(function () {
+                var url = 'https://script.google.com/macros/s/AKfycbwwI0HKVgPzla23ypNm1t5_B0H7q2FqWZAWNDe54N9NHJuA1a8/exec';
+                $.getJSON(url, function (data) {
+                    var html = '<h3>Google Sheet Data</h3><ul>';
+                    $.each(data, function (key, val) {
+                        html +='<li>'
+                        for (var x=0; x < val.length; x++) {
+                            html += val[x]+ ' '
+                        }
+                        html += '</li>'
+                    })
+                    html +='</ul>'
+                    $('#output').html(html);
+                })
+            })
+
+            });
+    </script>
+</body>
+</html>
