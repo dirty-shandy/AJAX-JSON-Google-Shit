@@ -1,0 +1,41 @@
+function doPost(e){
+  try{
+    var ss = SpreadsheetApp.openById("1UGmWx0T2tggMKb3FwCyv7_Z5CRaG-qzajIRzpSGZi6M");
+    var sheet = ss.getSheetByName('data1');
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var holderArray = [];
+    
+    for(var x=0; x<headers.length; x++) {
+      var tempValue = !e.parameter[headers[x]] ? ' ' : e.parameter[headers[x]];
+      holderArray.push(tempValue);
+    }
+    
+    sheet.appendRow(holderArray);
+    
+    var results = {"data":e.parameter, "holder": holderArray}
+    var jsonData = JSON.stringify(results)
+    return ContentService.createTextOutput(jsonData).setMimeType(ContentService.MimeType.JSON)
+  }
+  catch(e){
+    var error = {"error": e}
+    var jsonError = JSON.stringify(error)
+    return ContentService.createTextOutput(jsonError).setMimeType(ContentService.MimeType.JSON)
+  }
+  
+}
+
+function doGet(e){
+  try{
+    var ss = SpreadsheetApp.openById("1UGmWx0T2tggMKb3FwCyv7_Z5CRaG-qzajIRzpSGZi6M");
+    var sheet = ss.getSheetByName('data1');
+    var data = sheet.getRange(2, 1, sheet.getLastRow()-1, sheet.getLastColumn()).getValues();
+    var jsonData = JSON.stringify(data)
+    return ContentService.createTextOutput(jsonData).setMimeType(ContentService.MimeType.JSON)
+  }
+  catch(e){
+    var error = {"error": e}
+    var jsonError = JSON.stringify(error)
+    return ContentService.createTextOutput(jsonError).setMimeType(ContentService.MimeType.JSON)
+  }
+  
+}
