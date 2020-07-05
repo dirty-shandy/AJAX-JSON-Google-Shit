@@ -2,65 +2,125 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title></title>
 
+    <title>AJAX SHIT</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        input[type=text], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            input[type=submit]:hover {
+                background-color: #45a049;
+            }
+
+        div {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+        }
+    </style>
 </head>
 <body>
-    <h1> AJAX JSON Google Shit</h1>
-    <button type="button" id="loadData">Load Data</button><br><br>
+        <div class="container p-3 my-3 bg-primary text-white">
+            <h1>My Friends Contact List</h1>
+            <form id="myForm" action="/action_page.php">
+                <label for="First Name">First Name</label>
+                <input type="text" name="First Name" placeholder="Your Name" required>
 
-       <form id="myForm">
-          <div> First Name: <input type="text" name="First Name" value="First Name"><br></div>
-          <div> Last Name: <input type="text" name="Last Name" value="Last Name"><br></div>
-          <div> City: <input type="text" name="City" value="City"><br></div>
-          <div> Age: <input type="text" name="Age" value="Age"><br></div>
-          <div> Email: <input type="text" name="Email" value="Email"><br><br></div>
-          <button type="submit" id="submit">Send Data</button>
-       </form>                                                         
+                <label for="Last Name">Last Name</label>
+                <input type="text" name="Last Name" placeholder="Your Last Name" required>
 
+                <label for="City">City</label>
+                <input type="text" name="City" placeholder="Your City">
 
-    <div id="output"></div>
+                <label for="Age">Age</label>
+                <input type="text" name="Age" placeholder="Your Age">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-        $(function () {
-            $('#myForm').submit(function(e){
-                e.preventDefault();
-                var myData = $('form#myForm :input').serialize();
-                var url = 'https://script.google.com/macros/s/AKfycbwwI0HKVgPzla23ypNm1t5_B0H7q2FqWZAWNDe54N9NHJuA1a8/exec';
-                console.log(myData)
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: myData,
-                    success: function (data) {
-                        console.log(data)
-                    }
-                })
-            })
+                <label for="Email">Email</label>
+                <input type="text" name="Email" placeholder="Email" required>
 
+                <button class="button" type="submit" id="submit">Send Data</button>
+                <button class="button button2" type="button" id="loadData">Load Data</button><br><br>
+            </form>                                                         
+    </div>
 
-
-
-
-            $('#loadData').click(function () {
-                var url = 'https://script.google.com/macros/s/AKfycbwwI0HKVgPzla23ypNm1t5_B0H7q2FqWZAWNDe54N9NHJuA1a8/exec';
-                $.getJSON(url, function (data) {
-                    var html = '<h3>Google Sheet Data</h3><ul>';
-                    $.each(data, function (key, val) {
-                        html +='<li>'
-                        for (var x=0; x < val.length; x++) {
-                            html += val[x]+ ' '
-                        }
-                        html += '</li>'
+        <div id="output" class="container p-3 my-3 bg-dark text-white">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script>
+                $(function () {
+                    $('#myForm').submit(function (e) {
+                        e.preventDefault();
+                        var myData = $('form#myForm :input').serialize();
+                        var url = 'https://script.google.com/macros/s/AKfycbwwI0HKVgPzla23ypNm1t5_B0H7q2FqWZAWNDe54N9NHJuA1a8/exec';
+                        console.log(myData)
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            data: myData,
+                            success: function (data) {
+                                console.log(data)
+                            }
+                        })
                     })
-                    html +='</ul>'
-                    $('#output').html(html);
-                })
-            })
 
-            });
-    </script>
+                    $('#loadData').click(function () {
+                        var url = 'https://script.google.com/macros/s/AKfycbwwI0HKVgPzla23ypNm1t5_B0H7q2FqWZAWNDe54N9NHJuA1a8/exec';
+                        $.getJSON(url, function (data) {
+                            var html = '<h3>Data From Google Sheet</h3><ul>';
+                            $.each(data, function (key, val) {
+                                html += '<li>'
+                                for (var x = 0; x < val.length; x++) {
+                                    html += val[x] + ' '
+                                }
+                                html += '</li>'
+                            })
+                            html += '</ul>'
+                            $('#output').html(html);
+                        })
+                    })
+
+                });
+
+            </script>
+        </div>
 </body>
 </html>
