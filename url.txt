@@ -1,0 +1,60 @@
+https://spreadsheets.google.com/feeds/list/1UGmWx0T2tggMKb3FwCyv7_Z5CRaG-qzajIRzpSGZi6M/od6/public/values?alt=json
+
+function doGet(e){
+  //return ContentService.createTextOutput('Hello World');
+  
+  try{
+    var ss = SpreadsheetApp.openById("1UGmWx0T2tggMKb3FwCyv7_Z5CRaG-qzajIRzpSGZi6M");
+    var sheet = ss.getSheetByName('Sheet1');
+    var data = sheet.getRange(2, 1, sheet.getLastRow()-1, sheet.getLastColumn()).getValues();
+    var jsonData = JSON.stringify(data)
+    return ContentService.createTextOutput(jsonData).setMimeType(ContentService.MimeType.JSON)
+  }
+  catch(e){
+    var error = {"error":e}
+    var jsonError = JSON.stringify(error)
+    return ContentService.createTextOutput(jsonError).setMimeType(ContentService.MimeType.JSON)
+  }
+  
+}
+
+**********************************************************************************************************************************************
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1> AJAX JSON Google Shit</h1>
+    <button type="button" id="loadData">Load Data</button>
+    <div id="output"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#loadData').click(function () {
+                var url = 'https://spreadsheets.google.com/feeds/list/1UGmWx0T2tggMKb3FwCyv7_Z5CRaG-qzajIRzpSGZi6M/od6/public/values?alt=json';
+                $.getJSON(url, function (data) {
+                    console.log(data.feed.entry);
+                    var html = '<h3>Google Sheet Data</h3>';
+                    $.each(data.feed.entry, function (key, val) {
+                        console.log(val.gsx$firstname.$t)
+                        console.log(val.gsx$lastname.$t)
+                        console.log(val.gsx$city.$t)
+                        console.log(val.gsx$age.$t)
+                        html += '<div>' + val.gsx$firstname.$t + ' ' + val.gsx$lastname.$t + ' ' + val.gsx$city.$t
+                            + ' ' + val.gsx$age.$t + '</div>'
+                    })
+                    $('#output').html(html);
+                })
+            })
+
+            });
+    </script>
+</body>
+</html>
+
+**************************************************************************************************************************************************
+
